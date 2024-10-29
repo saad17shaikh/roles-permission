@@ -32,6 +32,6 @@ app.use(cookieParser());
 
 // IMPORT  ROUTES
 import superAdminRoute from "../routes/superadmin.routes";
-import userRoute from "../routes/user.routes"
+import userRoute from "../routes/user.routes";
 app.use("/api/superadmin", superAdminRoute);
 app.use("/api/user", userRoute);
