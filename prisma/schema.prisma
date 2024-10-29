@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SuperAdmin {
+  super_admin_id String   @id @default(cuid())
+  name           String   @db.VarChar(20)
+  email          String   @unique @db.VarChar(25)
+  password       String   @db.VarChar()
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  Admins         Admins[]
+}
+
+model Admins {
+  admin_id       String     @id @default(cuid())
+  super_admin_id String     @db.VarChar()
+  role_id        String     @db.VarChar()
+  name           String     @db.VarChar(20)
+  email          String     @db.VarChar(25)
+  password       String     @db.VarChar()
+  phone          String     @db.VarChar(30)
+  address        String     @db.VarChar()
+  role           Roles      @relation(fields: [role_id], references: [role_id], onDelete: Restrict)
+  super_admin    SuperAdmin @relation(fields: [super_admin_id], references: [super_admin_id], onDelete: Cascade, onUpdate: NoAction)
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @updatedAt
+  AdminUsers     Users[]
+}
+
+model Roles {
+  role_id         String            @id @default(cuid())
+  admin_id        String?           @db.VarChar() // Optional to allow user-specific roles
+  name            String            @db.VarChar(20)
+  description     String?           @db.VarChar(50)
+  is_primary      Boolean           @default(false) // Distinguishes full-permission roles
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  RolePermissions RolePermissions[]
+  Admins          Admins[]
+  Users           Users[]
+}
+
+model Permissions {
+  permission_id   String            @id @default(cuid())
+  name            String            @db.VarChar(20)
+  description     String?           @db.VarChar(50)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  RolePermissions RolePermissions[]
+}
+
+model RolePermissions {
+  role_permission_id String      @id @default(cuid())
+  role_id            String      @db.VarChar()
+  permission_id      String      @db.VarChar()
+  role               Roles       @relation(fields: [role_id], references: [role_id], onDelete: Cascade)
+  permission         Permissions @relation(fields: [permission_id], references: [permission_id], onDelete: Restrict)
+  created_at         DateTime    @default(now())
+  updated_at         DateTime    @updatedAt
+}
+
+model Users {
+  user_id    String   @id @default(cuid())
+  admin_id   String   @db.VarChar()
+  name       String   @db.VarChar(20)
+  email      String   @db.VarChar(30)
+  password   String   @db.VarChar()
+  role_id    String   @db.VarChar()
+  admin      Admins   @relation(fields: [admin_id], references: [admin_id], onDelete: Cascade)
+  role       Roles    @relation(fields: [role_id], references: [role_id], onDelete: Restrict)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
