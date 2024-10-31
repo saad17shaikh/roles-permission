@@ -44,7 +44,8 @@ export class BasePrismaOperation<
   WhereInput,
   Select,
   Result,
-  CreateInput
+  CreateInput,
+  FindMany
 > {
   protected prisma: PrismaClient;
   private model: Model;
@@ -67,10 +68,13 @@ export class BasePrismaOperation<
       select,
     });
   }
+
   // Create Data
   async create({ data, select }: { data: CreateInput; select?: Select }) {
     return await (this.prisma[this.model] as any).create({ data, select });
   }
+
+  // Transactional Create
   async createWithTransaction({
     data,
     select,
@@ -85,6 +89,9 @@ export class BasePrismaOperation<
   }): Promise<FindFirstResult<Result>> {
     return await (tx[this.model] as any).create({ data, select });
   }
+
+  // Find Many
+
 }
 
 export class SuperAdminOperation extends BasePrismaOperation<
@@ -92,7 +99,8 @@ export class SuperAdminOperation extends BasePrismaOperation<
   Prisma.SuperAdminWhereInput,
   Prisma.SuperAdminSelect,
   Prisma.SuperAdminGetPayload<{}>,
-  Prisma.SuperAdminCreateInput
+  Prisma.SuperAdminCreateInput,
+  Prisma.SuperAdminFindManyArgs
 > {
   constructor(prisma: PrismaClient) {
     super(prisma, "superAdmin");
@@ -104,7 +112,8 @@ export class AdminOperation extends BasePrismaOperation<
   Prisma.AdminsWhereInput,
   Prisma.AdminsSelect,
   Prisma.AdminsGetPayload<{}>,
-  Prisma.AdminsCreateInput
+  Prisma.AdminsCreateInput,
+  Prisma.AdminsFindManyArgs
 > {
   constructor(prisma: PrismaClient) {
     super(prisma, "admins");
@@ -116,7 +125,20 @@ export class UserOperation extends BasePrismaOperation<
   Prisma.UsersWhereInput,
   Prisma.UsersSelect,
   Prisma.UsersGetPayload<{}>,
-  Prisma.UsersCreateInput
+  Prisma.UsersCreateInput,
+  Prisma.UsersFindManyArgs
+> {
+  constructor(prisma: PrismaClient) {
+    super(prisma, "users");
+  }
+}
+export class RolesOperation extends BasePrismaOperation<
+  "users",
+  Prisma.RolesWhereInput,
+  Prisma.RolesSelect,
+  Prisma.RolesGetPayload<{}>,
+  Prisma.RolesCreateInput,
+  Prisma.RolesFindManyArgs
 > {
   constructor(prisma: PrismaClient) {
     super(prisma, "users");

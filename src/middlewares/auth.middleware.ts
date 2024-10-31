@@ -65,8 +65,10 @@ export const authenticUser = asyncHandler(async (req, res, next) => {
   }
 
   const admin_id = decodedToken(cookie)?.admin_id;
-  console.log({ admin_id });
+  
+  const user_id = decodedToken(cookie)?.user_id || null;
   req.admin_id = admin_id;
+  req.user_id = user_id;
 
   next();
 });
