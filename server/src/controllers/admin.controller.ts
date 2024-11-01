@@ -15,6 +15,7 @@ import bcrypt from "bcryptjs";
 // Login
 export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  console.log({ email, password });
   // Here we need to manage login for both admin and user
   /* 
       1. check empty fields

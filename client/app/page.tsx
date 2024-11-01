@@ -1,3 +1,12 @@
+"use client";
+
+import { toast } from "react-toastify";
+
 export default function Home() {
-  return <></>;
+  return (
+    <>
+      {" "}
+      <button onClick={() => toast("Wow so easy!")}>Notify me</button>
+    </>
+  );
 }
