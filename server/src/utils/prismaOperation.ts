@@ -91,7 +91,6 @@ export class BasePrismaOperation<
   }
 
   // Find Many
-
 }
 
 export class SuperAdminOperation extends BasePrismaOperation<
@@ -193,6 +192,7 @@ export const rolePermissions = async ({
   admin_id?: string;
   permissions?: string[];
 }) => {
+  console.log({ role_name });
   const role = await tx.roles.create({
     data: {
       name: role_name,

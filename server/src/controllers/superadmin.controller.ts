@@ -40,10 +40,11 @@ export const superAdminLogin = asyncHandler(
         password: true,
       },
     });
+    console.log({ email, password });
+    console.log({ superAdmin });
     if (!superAdmin) {
       throw new ApiError(404, "Invalid Credentials", null, false);
     }
-
     // 3.
     const isMatch = await bcryptjs.compare(password, superAdmin.password);
     if (!isMatch) {

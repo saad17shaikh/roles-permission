@@ -35,5 +35,5 @@ main()
   .catch(async (e) => {
     console.log(e);
     await prisma.$disconnect();
-    process.exit(1);
+    // process.exit(1);
   });
