@@ -42,7 +42,7 @@ model Admins {
 model Roles {
   role_id         String            @id @default(cuid())
   admin_id        String?           @db.VarChar() // Optional to allow user-specific roles
-  name            String            @db.VarChar(20)
+  name            String            @db.VarChar()
   description     String?           @db.VarChar(50)
   is_primary      Boolean           @default(false) // Distinguishes full-permission roles
   created_at      DateTime          @default(now())

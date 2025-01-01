@@ -120,3 +120,24 @@ export const deleteRowSuperAdmin = async (url: string, revPath: string) => {
   const data = await res.json();
   return data;
 };
+
+export const fetchDataSuperAdmin = async ({ url }: { url: any }) => {
+  const cookie = await getCookie("superadmintoken");
+  const res = await fetch(url, {
+    next: {
+      revalidate: 0,
+      tags: ["add-user"],
+    },
+    method: "GET",
+
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${cookie}`,
+    },
+    credentials: "include",
+  });
+
+  const data = await res.json();
+  console.log(data);
+  return data;
+};

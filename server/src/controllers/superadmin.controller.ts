@@ -40,8 +40,7 @@ export const superAdminLogin = asyncHandler(
         password: true,
       },
     });
-    console.log({ email, password });
-    console.log({ superAdmin });
+  
     if (!superAdmin) {
       throw new ApiError(404, "Invalid Credentials", null, false);
     }
@@ -131,3 +130,28 @@ export const createAdmin = asyncHandler(async (req: Request, res: Response) => {
     res
   );
 });
+
+export const getAllAdmins = asyncHandler(
+  async (req: Request, res: Response) => {
+    const admins = await prisma.admins.findMany({
+      select: {
+        name: true,
+        address: true,
+        email: true,
+        phone: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
+        created_at: true,
+      },
+    });
+    return new ApiResponse(
+      200,
+      true,
+      "Successfully Fetched",
+      admins
+    ).returnResponse(req, res);
+  }
+);

@@ -7,5 +7,5 @@ export const authRoutes = {
 
 export const superAdminRoutes = {
   add_admin: `${BASE_URL}/api/superadmin/create-admin`,
-
-}
+  get_admins: `${BASE_URL}/api/superadmin/get-admin`,
+};

@@ -39,8 +39,5 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => {
-      return <>Abc@gmail.com</>;
-    },
   },
 ];

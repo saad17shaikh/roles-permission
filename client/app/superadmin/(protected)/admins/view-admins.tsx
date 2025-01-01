@@ -3,19 +3,19 @@ import DataTable from "@/components/other-components/data-table";
 import React from "react";
 import { columns } from "./column";
 
-const ViewAdmins = () => {
+const ViewAdmins = ({data}:any) => {
   return (
-    <div>
+    <>
       {" "}
       <DataTable
         columns={columns}
-        data={[{ name: "Saad" }]}
+        data={data}
         showColDropDowns
         showPageEntries
         key={"add-admins"}
         selectionKey="name"
       />
-    </div>
+    </>
   );
 };
 
